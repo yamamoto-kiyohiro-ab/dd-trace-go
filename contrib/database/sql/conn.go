@@ -99,14 +99,14 @@ func (tc *TracedConn) PrepareContext(ctx context.Context, query string) (stmt dr
 		if err != nil {
 			return nil, err
 		}
-		return &tracedStmt{Stmt: stmt, traceParams: tc.traceParams, ctx: ctx, query: query}, nil
+		return &tracedStmt{Stmt: stmt, traceParams: tc.traceParams, query: query}, nil
 	}
 	stmt, err = tc.Prepare(cquery)
 	tc.tryTrace(ctx, queryTypePrepare, query, start, err, append(withDBMTraceInjectedTag(mode), tracer.WithSpanID(spanID))...)
 	if err != nil {
 		return nil, err
 	}
-	return &tracedStmt{Stmt: stmt, traceParams: tc.traceParams, ctx: ctx, query: query}, nil
+	return &tracedStmt{Stmt: stmt, traceParams: tc.traceParams, query: query}, nil
 }
 
 // ExecContext executes a query without returning any rows.
