@@ -18,16 +18,7 @@ var _ driver.Stmt = (*tracedStmt)(nil)
 type tracedStmt struct {
 	driver.Stmt
 	*traceParams
-	ctx   context.Context
 	query string
-}
-
-// Close sends a span before closing a statement
-func (s *tracedStmt) Close() (err error) {
-	start := time.Now()
-	err = s.Stmt.Close()
-	s.tryTrace(s.ctx, queryTypeClose, "", start, err)
-	return err
 }
 
 // ExecContext is needed to implement the driver.StmtExecContext interface
